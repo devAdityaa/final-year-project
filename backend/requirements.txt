@@ -1,5 +1,3 @@
-
-
 Flask-Cors
 waitress
 Flask
@@ -7,3 +5,5 @@ joblib
 scikit-learn==1.3.2
 xgboost
 pandas
+scikeras
+tensorflow

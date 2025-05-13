@@ -8,7 +8,12 @@ class Config:
         'XGBClassifier',
         'LogisticRegression',
         'DecisionTreeClassifier',
-        'KNeighborsClassifier'
+        'KNeighborsClassifier',
+        "DL"
+    ]
+    DL_MODELS = [
+        "DL"
+        
     ]
     
     # Default model for prediction if no model is specified

@@ -20,8 +20,10 @@ def get_available_models():
 @api.route("/predict/<model_name>", methods=["POST"])
 def predict(model_name):
     # Check if the model_name is valid
+    
     if model_name not in Config.AVAILABLE_MODELS:
-        return jsonify({"error": "Model not available"}), 400
+        print(model_name)
+        return jsonify({"error": "Model not available", "model_name": model_name}), 400
 
     # Fetch the model from the models dictionary
     model = models.get(model_name)
@@ -45,6 +47,10 @@ def predict(model_name):
         'SER_M', 'SER_N', 'SER_P', 'SER_Q', 'SER_R', 'SER_S', 'SER_T', 'SER_V', 'SER_W', 
         'SER_Y'
     ]
+    df_features = ['Subgraph', 'Degree', 'Eigenvector', 'Information', 'LAC', 'Betweenness', 'Closeness', 'Network']
+    
+    if model_name == "DL":
+        required_features.extend(df_features)
     
     # Check if all required features are in the input data
     missing_features = [feature for feature in required_features if feature not in data]

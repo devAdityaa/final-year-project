@@ -15,12 +15,14 @@ import { Card } from "@/components/ui/card";
 
 export const ProteinForm = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  console.log(backendUrl);
 
   const [proteinEntries, setProteinEntries] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
   const [selectedProtein, setSelectedProtein] = useState<any>(null);
+  const [selectedModelType, setSelectedModelType] = useState<string>("");
   const [selectedModel, setSelectedModel] = useState<string>("");
   const [prediction, setPrediction] = useState<any>(null);
 
@@ -35,9 +37,16 @@ export const ProteinForm = () => {
     /* ... same label object you already have ... */
   };
 
-  // Fetch protein entries on mount
+  // Fetch protein entries based on model type
   useEffect(() => {
-    Papa.parse("/data.csv", {
+    if (!selectedModelType) return;
+
+    setLoading(true);
+    const csvFile = selectedModelType === "DL" 
+      ? "Final SARS-CoV-2 dataset.csv" 
+      : "data.csv";
+
+    Papa.parse(csvFile, {
       download: true,
       header: true,
       dynamicTyping: true,
@@ -50,7 +59,18 @@ export const ProteinForm = () => {
         setLoading(false);
       },
     });
-  }, []);
+
+    // Automatically select Deep Learning model when DL type is selected
+    if (selectedModelType === "DL") {
+      setSelectedModel("DL");
+    } else {
+      setSelectedModel(""); // Reset model selection for ML type
+    }
+
+    // Reset selected protein and form data when switching model types
+    setSelectedProtein(null);
+    setFormData({});
+  }, [selectedModelType]);
 
   // When user selects an ID, find that protein & update form data
   const handleSelectProtein = (proteinId: string) => {
@@ -58,7 +78,7 @@ export const ProteinForm = () => {
     if (selected) {
       setSelectedProtein(selected);
 
-      // Update form fields with this protein’s data
+      // Update form fields with this protein's data
       const newFormData: any = {};
       Object.keys(selected).forEach((key) => {
         if (key !== "Entry" && key !== "Label") {
@@ -143,8 +163,24 @@ export const ProteinForm = () => {
         </h2>
         <div className="max-w-2xl mx-auto bg-white/80 backdrop-blur-sm rounded-lg shadow-lg p-8">
           <h2 className="text-2xl font-semibold text-center mb-8">
-            Select Protein and Model
+            Select Model Type and Protein
           </h2>
+
+          {/* Model Type Selection */}
+          <div className="mb-6">
+            <Select
+              value={selectedModelType}
+              onValueChange={setSelectedModelType}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Model Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="DL">Deep Learning</SelectItem>
+                <SelectItem value="ML">Machine Learning</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           {/* Main form row for ID & model selection */}
           {loading ? (
@@ -164,7 +200,6 @@ export const ProteinForm = () => {
                     <SelectValue placeholder="Select Data Entry" />
                   </SelectTrigger>
                   <SelectContent>
-                    {/* Search box at the top of the dropdown */}
                     <div className="px-2 py-2">
                       <Input
                         type="text"
@@ -193,22 +228,28 @@ export const ProteinForm = () => {
                     <SelectValue placeholder="Select Model" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="RandomForestClassifier">
-                      Random Forest
-                    </SelectItem>
-                    <SelectItem value="GradientBoostingClassifier">
-                      Gradient Boosting
-                    </SelectItem>
-                    <SelectItem value="XGBClassifier">XGBoost</SelectItem>
-                    <SelectItem value="LogisticRegression">
-                      Logistic Regression
-                    </SelectItem>
-                    <SelectItem value="DecisionTreeClassifier">
-                      Decision Tree
-                    </SelectItem>
-                    <SelectItem value="KNeighborsClassifier">
-                      K-Nearest Neighbors
-                    </SelectItem>
+                    {selectedModelType === "DL" ? (
+                      <SelectItem value="DL">Deep Learning</SelectItem>
+                    ) : (
+                      <>
+                        <SelectItem value="RandomForestClassifier">
+                          Random Forest
+                        </SelectItem>
+                        <SelectItem value="GradientBoostingClassifier">
+                          Gradient Boosting
+                        </SelectItem>
+                        <SelectItem value="XGBClassifier">XGBoost</SelectItem>
+                        <SelectItem value="LogisticRegression">
+                          Logistic Regression
+                        </SelectItem>
+                        <SelectItem value="DecisionTreeClassifier">
+                          Decision Tree
+                        </SelectItem>
+                        <SelectItem value="KNeighborsClassifier">
+                          K-Nearest Neighbors
+                        </SelectItem>
+                      </>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -217,7 +258,7 @@ export const ProteinForm = () => {
               <Button
                 type="submit"
                 className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white"
-                disabled={submitLoading}
+                disabled={submitLoading || !selectedModelType}
               >
                 {submitLoading ? (
                   <>

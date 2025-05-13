@@ -2,6 +2,7 @@
 
 import joblib
 import os
+import tensorflow as tf
 
 # Get the base directory of the project (assuming 'protein-predictor-server' is the root)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -16,5 +17,6 @@ models = {
     'XGBClassifier': joblib.load(os.path.join(MODEL_DIR, 'XGBClassifier.pkl')),
     'LogisticRegression': joblib.load(os.path.join(MODEL_DIR, 'LogisticRegression.pkl')),
     'DecisionTreeClassifier': joblib.load(os.path.join(MODEL_DIR, 'DecisionTreeClassifier.pkl')),
-    'KNeighborsClassifier': joblib.load(os.path.join(MODEL_DIR, 'KNeighborsClassifier.pkl'))
+    'KNeighborsClassifier': joblib.load(os.path.join(MODEL_DIR, 'KNeighborsClassifier.pkl')),
+    "DL": tf.keras.models.load_model(os.path.join(MODEL_DIR, "Final_Model.h5"))
 }
