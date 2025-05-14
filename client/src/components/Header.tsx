@@ -16,7 +16,7 @@ export const Header = () => {
             to="/" 
             className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700 transition-all"
           >
-            ProteinPredictor
+           CoVRx
           </Link>
 
           {/* Mobile menu button */}
@@ -39,6 +39,13 @@ export const Header = () => {
             >
               Home
             </Link>
+            <Link to="https://ffb3-2402-3a80-42fc-60f7-d165-d7f8-df48-844b.ngrok-free.app/drug-repurposing" className={`transition-all hover:-translate-y-0.5 ${
+                isHome 
+                  ? "text-blue-600 font-semibold" 
+                  : "text-gray-600 hover:text-blue-600"
+              }`}>
+            Drug Repurposing
+          </Link>
             <Link 
               to="https://covid19.india.gov.in/documents/" 
               target="_new"
