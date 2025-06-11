@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export const Header = () => {
   const location = useLocation();
+  const DrugRepurposingPage =  import.meta.env.DR_URL;
   const isHome = location.pathname === "/";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -16,7 +17,7 @@ export const Header = () => {
             to="/" 
             className="font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:from-blue-700 hover:to-purple-700 transition-all"
           >
-            ProteinPredictor
+           CoVRx
           </Link>
 
           {/* Mobile menu button */}
@@ -39,6 +40,13 @@ export const Header = () => {
             >
               Home
             </Link>
+            <Link to={DrugRepurposingPage} className={`transition-all hover:-translate-y-0.5 ${
+                isHome 
+                  ? "text-blue-600 font-semibold" 
+                  : "text-gray-600 hover:text-blue-600"
+              }`}>
+            Drug Repurposing
+          </Link>
             <Link 
               to="https://covid19.india.gov.in/documents/" 
               target="_new"
