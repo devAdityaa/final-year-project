@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export const Header = () => {
   const location = useLocation();
+  const DrugRepurposingPage =  import.meta.env.DR_URL;
   const isHome = location.pathname === "/";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -39,7 +40,7 @@ export const Header = () => {
             >
               Home
             </Link>
-            <Link to="https://ffb3-2402-3a80-42fc-60f7-d165-d7f8-df48-844b.ngrok-free.app/drug-repurposing" className={`transition-all hover:-translate-y-0.5 ${
+            <Link to={DrugRepurposingPage} className={`transition-all hover:-translate-y-0.5 ${
                 isHome 
                   ? "text-blue-600 font-semibold" 
                   : "text-gray-600 hover:text-blue-600"
