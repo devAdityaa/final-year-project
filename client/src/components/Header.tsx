@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export const Header = () => {
   const location = useLocation();
-  const DrugRepurposingPage =  import.meta.env.DR_URL;
+  const DrugRepurposingPage =  import.meta.env.VITE_DR_URL;
   const isHome = location.pathname === "/";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
