@@ -7,7 +7,7 @@ const AccessDeniedRedirect: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigate("/accessDenied/authentication");
-    }, 1500); // redirect after 2.5 seconds
+    }, 2000); // redirect after 2.5 seconds
 
     return () => clearTimeout(timer);
   }, [navigate]);
